@@ -1,0 +1,11 @@
+Events and real-time input – when to
+use which
+
+if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+// WHILE the left mouse button is being pressed, do something
+if (event.type == sf::Event::MouseButtonPressed)
+// WHEN the left mouse button has been pressed, do something
+
+In the first if statement we do something during the time that the mouse is being
+pressed down, while in the second version we only do something once after we have
+pressed the button down.

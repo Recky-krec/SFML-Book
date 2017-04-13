@@ -1,0 +1,11 @@
+######
+
+Our conventions:
+
+- camelCase for variable and function/methods
+- Capital for classes and structures
+- If you see some function parameter with the prefix of: "p", that stands for: "parameter". We probably added it to avoid variables names confliction
+
+- All function and method names describing perfectly what they mean so instead if bool getCoffee() use bool isCoffeeHot()
+
+#######
