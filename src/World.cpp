@@ -54,7 +54,7 @@ void World::buildScene()
 	std::unique_ptr<Aircraft> leader(new Aircraft(Aircraft::Eagle, textures));
 	playerAircraft = leader.get();
 	playerAircraft->setPosition(spawnPosition);
-	playerAircraft->setVelocity(40.f, scrollSpeed);
+	playerAircraft->setVelocity(0.f, 0.f);
 	sceneLayers[Air]->attachChild(std::move(leader));
 
 	// Add two escorting aircrafts, placed relatively to the main plane
@@ -90,8 +90,10 @@ void World::update(sf::Time dt)
 	if (velocity.x != 0.f && velocity.y != 0.f)
 		playerAircraft->setVelocity(velocity / std::sqrt(2.f));
 
+	//Keep moving at scroll velocity, so it never stops
 	playerAircraft->accelerate(0.f, scrollSpeed);
 
+	keepInsideBounds();
 
 	// Apply movements
 	sceneGraph.update(dt);
@@ -100,4 +102,22 @@ void World::update(sf::Time dt)
 CommandQueue& World::getCommandQueue()
 {
 	return commandQueue;
+}
+
+void World::keepInsideBounds()
+{
+	//Rect at (0,0) with size of view width x view height (1280x720)
+	sf::FloatRect viewBounds(worldView.getCenter() - worldView.getSize() / 2.f,
+							 worldView.getSize());
+
+	const float borderDistance = 40.f;
+
+	sf::Vector2f position = playerAircraft->getPosition();
+	position.x = std::max(position.x, viewBounds.left + borderDistance);
+	position.x = std::min (position.x, viewBounds.left + viewBounds.width - borderDistance);
+
+	position.y = std::max(position.y, viewBounds.top + borderDistance);
+	position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
+
+	playerAircraft->setPosition(position);
 }

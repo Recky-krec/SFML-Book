@@ -27,6 +27,9 @@ private:
 	void 					buildScene();
 
 private:
+	void					keepInsideBounds();
+
+private:
 	enum Layer
 		{
 			Background,
